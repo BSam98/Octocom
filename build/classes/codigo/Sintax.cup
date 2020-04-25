@@ -15,7 +15,7 @@ parser code
 }
 :};
 
-terminal Linea, Comillas, T_dato, Cadena, If, Else, Do, While, For,
+terminal Libreria, Include, Hashtag, Linea, Comillas, T_dato, Cadena, If, Else, Do, While, For,
     Igual, Suma, Resta, Multiplicacion, Division, Op_logico, Op_relacional,
     Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
     Llave_a, Llave_c, Corchete_a, Corchete_c, Main, P_coma, Identificador,
@@ -26,7 +26,9 @@ non terminal INICIO, SENTENCIA, DECLARACION, DECLARACION_FOR, IF, IF_ELSE,
 start with INICIO;
 
 INICIO ::= 
+    Hashtag Include Op_relacional Libreria Op_relacional P_coma 
     T_dato Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c |
+    Hashtag Include Op_relacional Libreria Op_relacional P_coma 
     Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c
 ;
 SENTENCIA ::= 

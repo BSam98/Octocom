@@ -32,6 +32,9 @@ espacio=[ ,\t,\r,\n]+
 /* Tipos de datos */
 ( byte | int | char | long | float | double ) {return new Symbol(sym.T_dato, yychar, yyline, yytext());}
 
+/* Tipos de Librerias */
+( iostream | stdio | stdio.h ) {return new Symbol(sym.Libreria, yychar, yyline, yytext());}
+
 /* Tipo de dato String */
 ( String ) {return new Symbol(sym.Cadena, yychar, yyline, yytext());}
 
@@ -49,6 +52,12 @@ espacio=[ ,\t,\r,\n]+
 
 /* Palabra reservada For */
 ( for ) {return new Symbol(sym.For, yychar, yyline, yytext());}
+
+/* Palabra reservada Include */
+( include ) {return new Symbol(sym.Include, yychar, yyline, yytext());}
+
+/* Incluir libreria */
+( "#") {return new Symbol(sym.Hashtag, yychar, yyline, yytext());}
 
 /* Operador Igual */
 ( "=" ) {return new Symbol(sym.Igual, yychar, yyline, yytext());}

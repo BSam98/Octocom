@@ -43,6 +43,18 @@ public void analizarLexico() throws IOException{
                 return;
             }
             switch (token) {
+                case Libreria:
+                    cont++;
+                    resultado += "  <Libreria>\t" + lexer.lexeme + "\n";
+                    break;
+                case Include:
+                    cont++;
+                    resultado += "  <Reservada include>\t" + lexer.lexeme + "\n";
+                    break;
+                case Hashtag:
+                    cont++;
+                    resultado += "  <Reservado hashtag>\t" + lexer.lexeme + "\n";
+                    break;
                 case Linea:
                     cont++;
                     resultado += "LINEA " + cont + "\n";
@@ -368,7 +380,7 @@ public void analizarLexico() throws IOException{
             txtSintactico.setForeground(new Color(25,111,61));
         } catch (Exception ex) {
             Symbol sym = s.getS();
-            txtSintactico.setText("Error de sintaxis. Linea" + (sym.right + 1)+ " Columna: "+(sym.left+1)+", Texto: \"" + sym.value + "\"");
+            txtSintactico.setText("Error de sintaxis. Linea: " + (sym.right + 1)+ " Columna: "+(sym.left+1)+", Texto: \"" + sym.value + "\"");
             txtSintactico.setForeground(Color.red);            
         }
     }//GEN-LAST:event_btnAnalizarSActionPerformed

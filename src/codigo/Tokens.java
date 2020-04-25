@@ -10,6 +10,9 @@ package codigo;
  * @author garci
  */
 public enum Tokens {
+    Libreria,
+    Include,
+    Hashtag,
     Int,
     Corchete_c,
     T_dato,

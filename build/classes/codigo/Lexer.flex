@@ -26,6 +26,9 @@ espacio=[ ,\t,\r]+
 /* Tipos de datos */
 ( byte | int | char | long | float | double ) {lexeme=yytext(); return T_dato;}
 
+/* Tipos de Librerias */
+( iostream | stdio | stdio.h ) {lexeme=yytext(); return Libreria;}
+
 /* Tipo de dato String */
 ( String ) {lexeme=yytext(); return Cadena;}
 
@@ -44,11 +47,17 @@ espacio=[ ,\t,\r]+
 /* Palabra reservada For */
 ( for ) {lexeme=yytext(); return For;}
 
+/* Plabra reservada Include */
+( include ) {lexeme=yytext(); return Include;}
+
 /* Operador Igual */
 ( "=" ) {lexeme=yytext(); return Igual;}
 
 /* Operador Suma */
 ( "+" ) {lexeme=yytext(); return Suma;}
+
+/* Palabra reservada */
+( "#") {lexeme=yytext(); return Hashtag;}
 
 /* Operador Resta */
 ( "-" ) {lexeme=yytext(); return Resta;}
