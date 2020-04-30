@@ -4,6 +4,10 @@ import java_cup.runtime.Symbol;
 
 parser code
 {:
+    public String resultado ="";
+    public Nodo padre;
+    public int contador = 1;
+    
     private Symbol s;
     
     public void syntax_error(Symbol s){
@@ -15,7 +19,7 @@ parser code
 }
 :};
 
-terminal Libreria, Include, Hashtag, Linea, Comillas, T_dato, Cadena, If, Else, Do, While, For,
+terminal  Libreria,Include, Hashtag, Linea, Comillas, T_dato, Cadena, If, Else, Do, While, For,
     Igual, Suma, Resta, Multiplicacion, Division, Op_logico, Op_relacional,
     Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
     Llave_a, Llave_c, Corchete_a, Corchete_c, Main, P_coma, Identificador,
@@ -27,28 +31,234 @@ start with INICIO;
 
 INICIO ::= 
     Hashtag Include Op_relacional Libreria Op_relacional P_coma 
-    T_dato Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c |
+    T_dato Main Parentesis_a Parentesis_c Llave_a SENTENCIA:n1 Llave_c {:
+        Nodo tmp = new Nodo("Inicio");
+        //tmp.setNumNodo(parser.contador++);
+
+        Nodo n5 = new Nodo("Libreria");
+        n5.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n5);
+        tmp.setNumNodo(parser.contador++);
+        
+        Nodo n4 = new Nodo("Op_relacional");
+        n4.setNumNodo(parser.contador++);
+        n4.setValor("<");
+        n5.addHijo((Nodo) n4);
+        n5.setNumNodo(parser.contador++);
+
+        Nodo n3 = new Nodo("Hashtag");
+        n3.setNumNodo(parser.contador++);
+        n3.setValor("#");
+        n4.addHijo((Nodo) n3);
+        n4.setNumNodo(parser.contador++);
+
+        Nodo n6 = new Nodo("Op_relacional");
+        n6.setNumNodo(parser.contador++);
+        n6.setValor(">");
+        n5.addHijo((Nodo) n6);
+        n5.setNumNodo(parser.contador++);
+    
+
+        Nodo n7 = new Nodo("P_coma");
+        n7.setNumNodo(parser.contador++);
+        n7.setValor(";");
+        n6.addHijo((Nodo) n7);
+        n6.setNumNodo(parser.contador++);
+
+        Nodo n8 = new Nodo("T_Dato");
+        n8.setNumNodo(parser.contador++);
+        n8.setValor("Tipo_Dato");
+        tmp.addHijo((Nodo) n8);
+        tmp.setNumNodo(parser.contador++);
+
+        Nodo n9 = new Nodo("Main");
+        n9.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n9);
+        tmp.setNumNodo(parser.contador++);
+
+        Nodo n10 = new Nodo("Parentesis_a");
+        n10.setNumNodo(parser.contador++);
+        n10.setValor("(");
+        tmp.addHijo((Nodo) n10);
+        tmp.setNumNodo(parser.contador++);
+
+        Nodo n11 = new Nodo("Parentesis_c");
+        n11.setNumNodo(parser.contador++);
+        n11.setValor(")");
+        tmp.addHijo((Nodo) n11);
+        tmp.setNumNodo(parser.contador++);
+
+        Nodo n12 = new Nodo("Llave_a");
+        n12.setNumNodo(parser.contador++);
+        n12.setValor("{");
+        tmp.addHijo((Nodo) n12);
+        tmp.setNumNodo(parser.contador++);
+        
+        //Nodo n13 = new Nodo("SENTENCIA");
+        //n13.setNumNodo(parser.contador++);
+        //n13.addHijo((Nodo) n1);
+        n12.addHijo((Nodo) n1);
+        n12.setNumNodo(parser.contador++);
+        
+
+        Nodo n14 = new Nodo("Llave_c");
+        n14.setNumNodo(parser.contador++);
+        n14.setValor("}");
+        tmp.addHijo((Nodo) n14);
+        tmp.setNumNodo(parser.contador++);
+
+        parser.padre = (Nodo) tmp;
+        RESULT = tmp;
+    :}|
     Hashtag Include Op_relacional Libreria Op_relacional P_coma 
+    Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c |
+    T_dato Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c |
     Main Parentesis_a Parentesis_c Llave_a SENTENCIA Llave_c
 ;
 SENTENCIA ::= 
-    SENTENCIA DECLARACION |
-    DECLARACION |
-    SENTENCIA IF | 
-    IF |
-    SENTENCIA IF_ELSE |
-    IF_ELSE |
-    SENTENCIA WHILE |
-    WHILE |
-    SENTENCIA DO_WHILE
-    DO_WHILE |
-    SENTENCIA FOR |
-    FOR
+    SENTENCIA:n1 DECLARACION:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :} |
+    
+    DECLARACION:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :} |
+    
+    SENTENCIA:n1 IF:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :}| 
+    IF:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :}|
+    SENTENCIA:n1 IF_ELSE:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :}|
+    IF_ELSE:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :}|
+    SENTENCIA:n1 WHILE:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :}|
+    WHILE:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :}|
+    SENTENCIA:n1 DO_WHILE:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :}|
+    DO_WHILE:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :}|
+    SENTENCIA:n1 FOR:n2 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        tmp.addHijo((Nodo) n2);
+        RESULT  = tmp;
+    :}|
+    FOR:n1 {:
+        Nodo tmp = new Nodo("SENTENCIA");
+        tmp.setNumNodo(parser.contador++);
+        tmp.addHijo((Nodo) n1);
+        RESULT  = tmp;
+    :}
 ;
 DECLARACION ::= 
-    T_dato Identificador P_coma | 
+    T_dato Identificador P_coma {:
+    Nodo tmp = new Nodo("DECLARACION");
+
+    Nodo n1 = new Nodo("Identificador");
+    n1.setNumNodo(parser.contador++);
+    n1.setValor("Variable");
+    tmp.addHijo((Nodo) n1);
+    tmp.setNumNodo(parser.contador++);
+    
+    Nodo n2 = new Nodo("T_Dato");
+    n2.setNumNodo(parser.contador++);
+    n2.setValor("Tipo_Dato");
+    n1.addHijo((Nodo) n2);
+    n1.setNumNodo(parser.contador++);
+
+    Nodo n3 = new Nodo("P_coma");
+    n3.setNumNodo(parser.contador++);
+    n3.setValor(";");
+    n1.addHijo((Nodo) n3);
+    n1.setNumNodo(parser.contador++);
+
+    RESULT = tmp;
+:}| 
     T_dato Identificador Op_atribucion Numero P_coma |
-    T_dato Identificador Igual Numero P_coma |
+    T_dato Identificador Igual Numero P_coma {:
+        Nodo tmp = new Nodo("DECLARACION");
+
+        Nodo n1 = new Nodo("Igual");
+        n1.setNumNodo(parser.contador++);
+        n1.setValor("=");
+        tmp.addHijo((Nodo) n1);
+        tmp.setNumNodo(parser.contador++);
+
+        Nodo n2 = new Nodo("Identificador");
+        n2.setNumNodo(parser.contador++);
+        n2.setValor("Variable");
+        n1.addHijo((Nodo) n2);
+        n1.setNumNodo(parser.contador++);
+
+        Nodo n3 = new Nodo("T_dato");
+        n3.setNumNodo(parser.contador++);
+        n3.setValor("Tipo_Dato");
+        n2.addHijo((Nodo) n3);
+        n2.setNumNodo(parser.contador++);
+
+
+        Nodo n4 = new Nodo("Numero");
+        n4.setNumNodo(parser.contador++);
+        n4.setValor("Numero");
+        n1.addHijo((Nodo) n4);
+        n1.setNumNodo(parser.contador++);
+
+        Nodo n5 = new Nodo("P_coma");
+        n5.setNumNodo(parser.contador++);
+        n5.setValor(";");
+        n4.addHijo((Nodo) n5);
+        n4.setNumNodo(parser.contador++);
+       
+        
+        RESULT = tmp;
+    :}|
     T_dato Identificador Op_incremento P_coma | 
     T_dato Op_incremento Identificador P_coma | 
     Cadena Identificador Op_atribucion Comillas Comillas P_coma |
@@ -56,12 +266,14 @@ DECLARACION ::=
     Cadena Identificador Op_atribucion Comillas Identificador Comillas P_coma |
     Cadena Identificador Igual Comillas Identificador Comillas P_coma
 ;
-IF ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+IF ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c |
+    If Parentesis_a Numero Op_relacional Numero Parentesis_c Llave_a SENTENCIA Llave_c
 ;
 SENTENCIA_BOOLEANA ::= 
     Op_booleano | 
     Identificador Op_relacional Op_booleano |
     Identificador Op_relacional Numero |
+    Numero Op_relacional Identificador |
     Identificador Op_relacional Identificador |
     Identificador Op_relacional Comillas Comillas |
     Identificador Op_relacional Comillas Identificador Comillas
@@ -72,7 +284,8 @@ WHILE ::= While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA L
 ;
 DO_WHILE ::= Do Llave_a SENTENCIA Llave_c While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c P_coma
 ;
-FOR ::= For Parentesis_a SENTENCIA_FOR Parentesis_c Llave_a SENTENCIA Llave_c
+FOR ::= For Parentesis_a SENTENCIA_FOR Parentesis_c Llave_a SENTENCIA Llave_c |
+    For Parentesis_a SENTENCIA_FOR Parentesis_c Llave_a Llave_c
 ;
 SENTENCIA_FOR ::=
     T_dato Identificador Igual Numero P_coma SENTENCIA_BOOLEANA P_coma DECLARACION_FOR |

@@ -9,10 +9,16 @@ import com.sun.istack.internal.logging.Logger;
 import java.awt.Color;
 import static java.awt.Color.BLUE;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.util.logging.Level;
+import static java_cup.emit.parser;
+import java_cup.parser;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
 import jdk.nashorn.internal.runtime.regexp.joni.Syntax;
@@ -28,8 +34,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+                   
     }
-
+    Nodo nombre;
 public void analizarLexico() throws IOException{
         int cont = 1;
         
@@ -176,6 +183,7 @@ public void analizarLexico() throws IOException{
         btnLimpiarS = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtSintactico = new javax.swing.JTextArea();
+        btnArbol = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(700, 745));
@@ -299,6 +307,15 @@ public void analizarLexico() throws IOException{
         txtSintactico.setRows(5);
         jScrollPane3.setViewportView(txtSintactico);
 
+        btnArbol.setBackground(new java.awt.Color(0, 0, 0));
+        btnArbol.setForeground(new java.awt.Color(204, 255, 255));
+        btnArbol.setText("Arbol");
+        btnArbol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArbolActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -307,6 +324,8 @@ public void analizarLexico() throws IOException{
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(btnAnalizarS)
+                        .addGap(234, 234, 234)
+                        .addComponent(btnArbol)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLimpiarS))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -320,7 +339,9 @@ public void analizarLexico() throws IOException{
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLimpiarS)
-                    .addComponent(btnAnalizarS))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAnalizarS)
+                        .addComponent(btnArbol)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(159, Short.MAX_VALUE))
@@ -364,7 +385,54 @@ public void analizarLexico() throws IOException{
             java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAnalizarLActionPerformed
-
+        public void graficar(Nodo raiz){
+        FileWriter archivo = null;
+        PrintWriter pw = null;
+        String cadena = graficarNodo(raiz);
+        
+        
+        try{
+            archivo = new FileWriter("C:/Users/garci/Documents/NetBeansProjects/Octocom/arbol.dot");
+            pw = new PrintWriter(archivo);
+            pw.println("digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD \n");
+            pw.println(cadena);
+            pw.println("\n}");
+            archivo.close();
+        }catch (Exception e) {
+            System.out.println(e +" 1");
+        }
+        
+        try {
+            String doPath = "C:/Program Files (x86)/Graphviz2.38/bin/dot.exe";
+            String fileInputPath = "C:/Users/garci/Documents/NetBeansProjects/Octocom/arbol.dot";
+            String fileOutputPath = "C:/Users/garci/Documents/NetBeansProjects/Octocom/arbol.png";
+            String tParam = "-Tpng";
+            String tOParam = "-o";
+            //String cmd = "C:/Users/garci/Documents/NetBeansProjects/Octocom> dot.exe -Tpng C:/Users/garci/Documents/NetBeansProjects/Octocom/arbol.dot -o C:/Users/garci/Documents/NetBeansProjects/Octocom/arbol.png";
+            String [] cmd = new String[5];
+            cmd [0] = doPath;
+            cmd [1] = tParam;
+            cmd [2] = fileInputPath;
+            cmd [3] = tOParam;
+            cmd [4] = fileOutputPath;
+            
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException ioe) {
+            System.out.println(ioe +" 2");
+        }
+        
+    }
+    public String graficarNodo(Nodo nodo){
+        String cadena = "";
+        for(Nodo hijos : nodo.getHijos())
+        {
+            cadena += "\"" + nodo.getNumNodo() + "_" + nodo.getNombre() + " -> " + nodo.getValor() + "\"->\"" + hijos.getNumNodo() + "_" + hijos.getNombre() + " -> " + hijos.getValor() + "\"\n";
+            cadena += graficarNodo(hijos);
+            System.out.println(cadena);
+        }
+        return cadena;
+    }
+    
     private void btnLimpiarLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarLActionPerformed
         txtCodigo.setText("");
         txtLexico.setText("");
@@ -378,6 +446,9 @@ public void analizarLexico() throws IOException{
             s.parse();
             txtSintactico.setText("Analisis realizado correctamente");
             txtSintactico.setForeground(new Color(25,111,61));
+            System.out.println(s.padre);
+            //graficar(s.padre);
+            nombre = s.padre;
         } catch (Exception ex) {
             Symbol sym = s.getS();
             txtSintactico.setText("Error de sintaxis. Linea: " + (sym.right + 1)+ " Columna: "+(sym.left+1)+", Texto: \"" + sym.value + "\"");
@@ -388,6 +459,12 @@ public void analizarLexico() throws IOException{
     private void btnLimpiarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarSActionPerformed
         txtSintactico.setText("");
     }//GEN-LAST:event_btnLimpiarSActionPerformed
+
+    private void btnArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArbolActionPerformed
+
+            
+        graficar(nombre);
+    }//GEN-LAST:event_btnArbolActionPerformed
 
     /**
      * @param args the command line arguments
@@ -428,6 +505,7 @@ public void analizarLexico() throws IOException{
     private javax.swing.JButton btnAbrir;
     private javax.swing.JButton btnAnalizarL;
     private javax.swing.JButton btnAnalizarS;
+    private javax.swing.JButton btnArbol;
     private javax.swing.JButton btnLimpiarL;
     private javax.swing.JButton btnLimpiarS;
     private javax.swing.JPanel jPanel1;

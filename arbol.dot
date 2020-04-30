@@ -1,0 +1,23 @@
+digraph G {node[shape=box, style=filled, color=blanchedalmond]; edge[color=chocolate3];rankdir=UD 
+
+"34_Inicio -> null"->"19_Libreria -> null"
+"19_Libreria -> null"->"17_Op_relacional -> <"
+"17_Op_relacional -> <"->"16_Hashtag -> #"
+"19_Libreria -> null"->"21_Op_relacional -> >"
+"21_Op_relacional -> >"->"20_P_coma -> ;"
+"34_Inicio -> null"->"22_T_Dato -> Tipo_Dato"
+"34_Inicio -> null"->"24_Main -> null"
+"34_Inicio -> null"->"26_Parentesis_a -> ("
+"34_Inicio -> null"->"28_Parentesis_c -> )"
+"34_Inicio -> null"->"32_Llave_a -> {"
+"32_Llave_a -> {"->"11_SENTENCIA -> null"
+"11_SENTENCIA -> null"->"2_DECLARACION -> null"
+"2_DECLARACION -> null"->"8_Igual -> ="
+"8_Igual -> ="->"6_Identificador -> Variable"
+"6_Identificador -> Variable"->"5_T_dato -> Tipo_Dato"
+"8_Igual -> ="->"10_Numero -> Numero"
+"10_Numero -> Numero"->"9_P_coma -> ;"
+"34_Inicio -> null"->"33_Llave_c -> }"
+
+
+}
