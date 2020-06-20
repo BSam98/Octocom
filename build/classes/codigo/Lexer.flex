@@ -24,10 +24,10 @@ espacio=[ ,\t,\r]+
 ( "\"" ) {lexeme=yytext(); return Comillas;}
 
 /* Tipos de datos */
-( byte | int | char | long | float | double ) {lexeme=yytext(); return T_dato;}
+( byte | int | char | long | float | double | void) {lexeme=yytext(); return T_dato;}
 
 /* Tipos de Librerias */
-( iostream | stdio | stdio.h ) {lexeme=yytext(); return Libreria;}
+( iostream | stdio | stdio.h | conio.h | iostream.h) {lexeme=yytext(); return Librerias;}
 
 /* Tipo de dato String */
 ( String ) {lexeme=yytext(); return Cadena;}
@@ -49,6 +49,9 @@ espacio=[ ,\t,\r]+
 
 /* Plabra reservada Include */
 ( include ) {lexeme=yytext(); return Include;}
+
+/* Imprimir  Cout */
+( cout ) {lexeme=yytext(); return Cout;}
 
 /* Operador Igual */
 ( "=" ) {lexeme=yytext(); return Igual;}
@@ -104,6 +107,9 @@ espacio=[ ,\t,\r]+
 /* Marcador de inicio de algoritmo */
 ( "main" ) {lexeme=yytext(); return Main;}
 
+/* Dos puntos */
+( ":" ) {lexeme=yytext(); return D_Puntos;}
+
 /* Punto y coma */
 ( ";" ) {lexeme=yytext(); return P_coma;}
 
@@ -112,6 +118,9 @@ espacio=[ ,\t,\r]+
 
 /* Numero */
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
+
+/* Return */
+("return") {lexeme=yytext (); return Return;}
 
 /* Error de analisis */
  . {return ERROR;}

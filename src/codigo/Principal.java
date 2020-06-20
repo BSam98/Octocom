@@ -21,21 +21,21 @@ public class Principal {
         JFlex.Main.generate(archivo);
         java_cup.Main.main(rutaS);
         
-        Path rutaSym = Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/sym.java");
+        Path rutaSym = Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/sym.java");//
         if (Files.exists(rutaSym)) {
             Files.delete(rutaSym);
         }
         Files.move(
                 Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/sym.java"), 
-                Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/sym.java")
+                Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/sym.java")//
         );
-        Path rutaSin = Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/Sintax.java");
+        Path rutaSin = Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/Sintax.java");//
         if (Files.exists(rutaSin)) {
             Files.delete(rutaSin);
         }
         Files.move(
                 Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/Sintax.java"), 
-                Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/Sintax.java")
+                Paths.get("C:/Users/garci/Documents/NetBeansProjects/Octocom/src/codigo/Sintax.java")//
         );
     }
 }

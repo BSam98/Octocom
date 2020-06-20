@@ -30,10 +30,10 @@ espacio=[ ,\t,\r,\n]+
 ( "\"" ) {return new Symbol(sym.Comillas, yychar, yyline, yytext());}
 
 /* Tipos de datos */
-( byte | int | char | long | float | double ) {return new Symbol(sym.T_dato, yychar, yyline, yytext());}
+( byte | int | char | long | float | double | void) {return new Symbol(sym.T_dato, yychar, yyline, yytext());}
 
 /* Tipos de Librerias */
-( iostream | stdio | stdio.h ) {return new Symbol(sym.Libreria, yychar, yyline, yytext());}
+( iostream | stdio | stdio.h | conio.h| iostream.h) {return new Symbol(sym.Librerias, yychar, yyline, yytext());}
 
 /* Tipo de dato String */
 ( String ) {return new Symbol(sym.Cadena, yychar, yyline, yytext());}
@@ -58,6 +58,9 @@ espacio=[ ,\t,\r,\n]+
 
 /* Incluir libreria */
 ( "#") {return new Symbol(sym.Hashtag, yychar, yyline, yytext());}
+
+/* Imprimir Cout */
+( cout ) {return new Symbol(sym.Cout, yychar, yyline, yytext());}
 
 /* Operador Igual */
 ( "=" ) {return new Symbol(sym.Igual, yychar, yyline, yytext());}
@@ -110,6 +113,9 @@ espacio=[ ,\t,\r,\n]+
 /* Marcador de inicio de algoritmo */
 ( "main" ) {return new Symbol(sym.Main, yychar, yyline, yytext());}
 
+/* Dos puntos */
+( ":" ) {return new Symbol(sym.D_Puntos, yychar, yyline, yytext());}
+
 /* Punto y coma */
 ( ";" ) {return new Symbol(sym.P_coma, yychar, yyline, yytext());}
 
@@ -118,6 +124,9 @@ espacio=[ ,\t,\r,\n]+
 
 /* Numero */
 ("(-"{D}+")")|{D}+ {return new Symbol(sym.Numero, yychar, yyline, yytext());}
+
+/* Return */
+( "return" ) {return new Symbol(sym.Return, yychar, yyline, yytext());}
 
 /* Error de analisis */
  . {return new Symbol(sym.ERROR, yychar, yyline, yytext());}

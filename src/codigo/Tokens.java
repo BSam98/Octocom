@@ -10,12 +10,13 @@ package codigo;
  * @author garci
  */
 public enum Tokens {
-    Libreria,
+    Librerias,
     Include,
     Hashtag,
     Int,
     Corchete_c,
     T_dato,
+    Cout,
     Op_logico,
     Do,
     Op_incremento,
@@ -25,6 +26,7 @@ public enum Tokens {
     Corchete_a,
     Op_relacional,
     Comillas,
+    D_Puntos,
     Linea,
     If,
     Else,
@@ -43,5 +45,6 @@ public enum Tokens {
     P_coma,
     Identificador,
     Numero,
+    Return,
     ERROR
 }
